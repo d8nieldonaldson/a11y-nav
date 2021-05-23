@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Accessible Navigation Menu</title>
+</head>
+<body>
+    <header>
+        <nav class="global-nav" aria-label="Main Navigation" role="navigation">
+            <ul class="global-nav-list">
+              <li class="global-nav-list-item">
+                <a href="" class="global-nav-top-level-link">top level item</a>
+                <button class="submenu-toggle" aria-label="toggle menu" aria-haspopup="true" aria-expanded="false" aria-controls="submenu-1">
+                  button
+                </button>
+                <ul id="submenu-1" class="submenu-list" role="menu" hidden>
+                  <li role="none">
+                    <a href="" role="menuitem" tabindex="-1">link</a>
+                  </li>
+                  <li role="none">
+                    <a href="" role="menuitem" tabindex="-1">link</a>
+                  </li>
+                   <li role="none">
+                      <a href="" role="menuitem" tabindex="-1">link</a>
+                  </li>
+                   <li role="none">
+                      <a href="" role="menuitem" tabindex="-1">link</a>
+                  </li>
+                </ul>
+                </li>
+              <li class="global-nav-list-item">
+                <a href="" class="global-nav-top-level-link">top level item</a>
+                <button class="submenu-toggle" aria-label="toggle menu" aria-haspopup="true" aria-expanded="false" aria-controls="submenu-2">
+                  button
+                </button>
+                <ul id="submenu-2" class="submenu-list" role="menu" hidden>
+                  <li role="none">
+                      <a href="" role="menuitem" tabindex="-1">link</a>
+                  </li>
+                  <li role="none">
+                      <a href="" role="menuitem" tabindex="-1">link</a>
+                  </li>
+                </ul>
+                </li>
+                <li class="global-nav-list-item">
+                  <a href="" class="global-nav-top-level-link">top level item</a>
+                  <button class="submenu-toggle" aria-label="toggle menu" aria-haspopup="true" aria-expanded="false" aria-controls="submenu-1">
+                    button
+                  </button>
+                  <ul id="submenu-1" class="submenu-list" role="menu" hidden>
+                    <li role="none">
+                      <a href="" role="menuitem" tabindex="-1">link</a>
+                    </li>
+                    <li role="none">
+                      <a href="" role="menuitem" tabindex="-1">link</a>
+                    </li>
+                     <li role="none">
+                        <a href="" role="menuitem" tabindex="-1">link</a>
+                    </li>
+                     <li role="none">
+                        <a href="" role="menuitem" tabindex="-1">link</a>
+                    </li>
+                  </ul>
+                  </li>
+                <li class="global-nav-list-item">
+                  <a href="" class="global-nav-top-level-link">top level item</a>
+                  <button class="submenu-toggle" aria-label="toggle menu" aria-haspopup="true" aria-expanded="false" aria-controls="submenu-2">
+                    button
+                  </button>
+                  <ul id="submenu-2" class="submenu-list" role="menu" hidden>
+                    <li role="none">
+                        <a href="" role="menuitem" tabindex="-1">link</a>
+                    </li>
+                    <li role="none">
+                        <a href="" role="menuitem" tabindex="-1">link</a>
+                    </li>
+                  </ul>
+                  </li>
+            </ul>
+          </nav>
+    </header>
+    <main>
+        <h1>
+            Example of an accessible navigation menu with nested content
+        </h1>
+        <p>Requirements: keyboard navigation</p>
+        <ul class="bullets">
+            <li>Toggle submenu on parent item hover</li>
+            <li>Toggle submenu on button click</li>
+            <li>Close submenu by hitting ESC key</li>
+            <li>Close submenu by tabbing to next/previous focusable item</li>
+            <li>Navigate submenu items with UP and DOWN arrow keys</li>
+            <li>Submenu items must loop</li>
+        </ul>
+        
+      </main>
+    <script src="./main.js"></script>
+</body>
+</html>

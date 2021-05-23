@@ -1,0 +1,43 @@
+body {
+  font-size: 10px;
+}
+
+header,
+main {
+  padding: 2rem;
+  font-size: 1.6rem;
+}
+
+h1 {
+  padding: 1rem;
+  font-size: 2.2rem;
+}
+
+p,
+ul.bullets {
+  padding: 1rem;
+}
+
+ul.bullets {
+  list-style: disc;
+}
+.global-nav-list {
+  display: flex;
+}
+
+.global-nav-list-item {
+  margin-right: 1rem;
+}
+
+.submenu-list {
+  display: none;
+}
+
+.submenu-list.show {
+  display: block;
+}
+
+*.focus,
+*:focus {
+  outline: 1px solid blue;
+}
