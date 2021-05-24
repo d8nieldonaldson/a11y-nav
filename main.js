@@ -67,7 +67,7 @@ function moveToLastItem(items, currentIndex) {
 
 function openUpdateNav(container, button, submenu, children) {
     container.classList.add('expanded');
-    openUpdateButton(button)
+    openUpdateButton(button);
     openSubmenu(submenu);
     if (children) {
         focusFirstChild(children);
@@ -77,8 +77,8 @@ function openUpdateNav(container, button, submenu, children) {
 
 function closeUpdateNav(container, button, submenu) {
     container.classList.remove('expanded');
-    closeUpdateButton(button)
-    closeSubmenu(submenu)
+    closeUpdateButton(button);
+    closeSubmenu(submenu);
     isMenuOpen = false;
 }
 
@@ -174,7 +174,7 @@ document.addEventListener('keydown', function(e) {
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
-                };
+                }
             });
             // first item is focused and user hits Up arrow: so loop to the last item
             if (currentIndex === 0) {
@@ -187,7 +187,7 @@ document.addEventListener('keydown', function(e) {
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
-                };
+                }
             });
             // last item is focused and user hits Down arrow: so loop to the first item
             if (currentIndex === children.length - 1) {

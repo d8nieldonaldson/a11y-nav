@@ -27,10 +27,16 @@ ul.bullets {
 
 .global-nav-list-item {
   margin-right: 1rem;
+  position: relative;
 }
 
 .submenu-list {
   display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 1rem;
 }
 
 .submenu-list.show {
