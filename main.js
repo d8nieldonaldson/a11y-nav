@@ -144,25 +144,10 @@ globalNavTopLevelLinks.forEach(link => {
 });
 
 
-
-
-
-document.onkeydown = function(e) {
-    e = e || window.event;
-    // use ESC key to exit sort menu
-    if (e.keyCode == 27) {
-        if(isMenuOpen){
-            console.log('ESC to close');
-            let currentlyOpenParent = globalNavList.querySelector('.expanded');
-            let currentlyOpenButton = currentlyOpenParent.querySelector('button');
-            let currentlyOpenSubmenu = currentlyOpenParent.querySelector('ul.submenu-list');
-            closeUpdateNav(currentlyOpenParent, currentlyOpenButton, currentlyOpenSubmenu);
-            return currentlyOpenButton.focus();
-        }
-    }
-    // use up arrow to navigate through submenu items, should loop so if on 
-    // first submenu item and up is pressed, focus should move to the last submenu item
-    if (e.keyCode == 38) {
+document.addEventListener('keydown', function(e) {
+    console.log(e.code); // User presses enter on their main keyboard - Enter
+    if(e.code === 'ArrowUp'){
+        console.log('up arrow pressedjsafkjdf');
         if(isMenuOpen){
             
             let currentlyOpenParent = globalNavList.querySelector('.expanded');
@@ -176,7 +161,7 @@ document.onkeydown = function(e) {
                     currentIndex = index;
                 };
             });
-            console.log(`arrow key up and ${currentIndex}`);
+         
             if(currentIndex === 0){
                 children[0].classList.remove('focus');
                 children[children.length -1].focus();
@@ -184,16 +169,14 @@ document.onkeydown = function(e) {
 
             }
             nextIndex = currentIndex - 1;
-            console.log(`up arrow and nextIndex: ${nextIndex}`);
             children[currentIndex].classList.remove('focus');
             children[nextIndex].classList.add('focus');
             return children[nextIndex].focus();
 
         }
     }
-    // use down arrow to navigate through submenu items, should loop so if on 
-    // last submenu item and down is pressed, focus should move to the first submenu item
-    if (e.keyCode == 40) {
+    if(e.code === 'ArrowDown'){
+        console.log('downtown arrow');
         if(isMenuOpen){
             
             let currentlyOpenParent = globalNavList.querySelector('.expanded');
@@ -221,9 +204,18 @@ document.onkeydown = function(e) {
             return children[nextIndex].focus();
         }
     }
-};
-
-
+    if(e.code === 'Escape'){
+        console.log('escape key pressed');
+        if(isMenuOpen){
+            console.log('ESC to close');
+            let currentlyOpenParent = globalNavList.querySelector('.expanded');
+            let currentlyOpenButton = currentlyOpenParent.querySelector('button');
+            let currentlyOpenSubmenu = currentlyOpenParent.querySelector('ul.submenu-list');
+            closeUpdateNav(currentlyOpenParent, currentlyOpenButton, currentlyOpenSubmenu);
+            return currentlyOpenButton.focus();
+        }
+    }
+});
 
 // click anywhere outside of open menu to close
 // window.addEventListener('click', function(e) {
