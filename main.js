@@ -77,18 +77,14 @@ submenuToggles.forEach(toggle => {
     toggle.addEventListener('click', e => {
         const [parent, button, submenu, children] = findNewMenuElements(e);
         if (isMenuOpen && parent.classList.contains('expanded')) {
-            console.log(`just close that shit update betterized`);
             return closeUpdateNav(parent, button, submenu);
         }
         if (isMenuOpen && !parent.classList.contains('expanded')) {
-            console.log(`it is complicated`);
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             closeUpdateNav(openParent, openButton, openSubmenu);
             return setTimeout(openUpdateNav(parent, button, submenu, children), 0);
-
         }
         if (!isMenuOpen) {
-            console.log(`just open that shit`);
             return openUpdateNav(parent, button, submenu, children);
         }
 
@@ -98,16 +94,16 @@ submenuToggles.forEach(toggle => {
 
 globalNavListItems.forEach(item => {
     item.addEventListener('mouseenter', e => {
-        let parent = e.target;
-        let submenu = getSubmenu(parent);
-        let children = getChildren(submenu);
-        let button = parent.querySelector('button');
+        const parent = e.target;
+        const submenu = getSubmenu(parent);
+        const children = getChildren(submenu);
+        const button = parent.querySelector('button');
         if (isMenuOpen && parent.classList.contains('expanded')) {
             console.log('already open');
             return;
         }
         if (isMenuOpen && !parent.classList.contains('expanded')) {
-            console.log('it is complicated again as well');
+            console.log('close current and open new');
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             closeUpdateNav(openParent, openButton, openSubmenu);
             return setTimeout(openUpdateNav(parent, button, submenu, children), 0);
@@ -120,9 +116,6 @@ globalNavListItems.forEach(item => {
 
 globalNavListItems.forEach(item => {
     item.addEventListener('mouseleave', e => {
-        // let parent = e.target;
-        // let submenu = getSubmenu(parent);
-        // let button = parent.querySelector('button');
         const [parent, button, submenu] = findOpenMenuElements(globalNavList);
         if (isMenuOpen) {
             console.log(`just leaving updated`);
@@ -138,11 +131,9 @@ globalNavTopLevelLinks.forEach(link => {
             console.log('when link gets focus, close the open menu, updated');
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             return closeUpdateNav(openParent, openButton, openSubmenu);
-
         }
     });
 });
-
 
 document.addEventListener('keydown', function(e) {
     console.log(e.code); // User presses enter on their main keyboard - Enter
@@ -153,19 +144,15 @@ document.addEventListener('keydown', function(e) {
         let currentIndex = 0;
         let nextIndex = 0;
         if (e.code === 'ArrowUp') {
-            console.log('up arrow pressed, streamlined j');
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
                 };
             });
-
             if (currentIndex === 0) {
-                console.log(`new way`);
                 firstChild.classList.remove('focus');
                 lastChild.focus();
                 return lastChild.classList.add('focus');
-
             }
             nextIndex = currentIndex - 1;
             children[currentIndex].classList.remove('focus');
@@ -173,13 +160,11 @@ document.addEventListener('keydown', function(e) {
             return children[nextIndex].focus();
         }
         if (e.code === 'ArrowDown') {
-            console.log('downtown arrow k');
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
                 };
             });
-            console.log(`arrow key down and ${currentIndex} k`);
             if (currentIndex === children.length - 1) {
                 children[currentIndex].classList.remove('focus');
                 firstChild.focus();
@@ -187,14 +172,11 @@ document.addEventListener('keydown', function(e) {
 
             }
             nextIndex = currentIndex + 1;
-            console.log(`down arrow and nextIndex: ${ nextIndex } k`);
             children[currentIndex].classList.remove('focus');
             children[nextIndex].classList.add('focus');
             return children[nextIndex].focus();
-
         }
         if (e.code === 'Escape') {
-            console.log('ESC to close k');
             closeUpdateNav(openParent, openButton, openSubmenu);
             return openButton.focus();
         }
