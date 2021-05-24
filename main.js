@@ -206,10 +206,12 @@ document.addEventListener('keydown', function(e) {
 });
 
 // click anywhere outside of open menu to close
-// window.addEventListener('click', function(e) {
-//     if (!(sortContainer && sortContainer.contains(e.target))) {
-//         if (isSortPanelOpen) {
-//             closePanel(sortButton, sortPanel);
-//         }
-//     }
-// });
+window.addEventListener('click', function(e) {
+    if (!(globalNavList && globalNavList.contains(e.target))) {
+        if (isMenuOpen) {
+            const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
+            return closeUpdateNav(openParent, openButton, openSubmenu);
+
+        }
+    }
+});
