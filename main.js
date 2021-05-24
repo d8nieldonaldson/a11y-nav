@@ -41,12 +41,37 @@ function getChildren(parent) {
     return parent.querySelectorAll('a');
 }
 
+function moveToFirstItem(items, currentIndex) {
+    items[currentIndex].classList.remove('focus');
+    items[0].classList.add('focus');
+    return items[0].focus();
+}
+
+function moveToNextItem(items, currentIndex) {
+    items[currentIndex].classList.remove('focus');
+    items[currentIndex + 1].classList.add('focus');
+    return items[currentIndex + 1].focus();
+}
+
+function moveToPreviousItem(items, currentIndex) {
+    items[currentIndex].classList.remove('focus');
+    items[currentIndex - 1].classList.add('focus');
+    return items[currentIndex - 1].focus();
+}
+
+function moveToLastItem(items, currentIndex) {
+    items[currentIndex].classList.remove('focus');
+    items[items.length - 1].classList.add('focus');
+    return items[items.length - 1].focus();
+}
 
 function openUpdateNav(container, button, submenu, children) {
     container.classList.add('expanded');
     openUpdateButton(button)
     openSubmenu(submenu);
-    focusFirstChild(children);
+    if (children) {
+        focusFirstChild(children);
+    }
     isMenuOpen = true;
 }
 
@@ -96,20 +121,19 @@ globalNavListItems.forEach(item => {
     item.addEventListener('mouseenter', e => {
         const parent = e.target;
         const submenu = getSubmenu(parent);
-        const children = getChildren(submenu);
         const button = parent.querySelector('button');
         if (isMenuOpen && parent.classList.contains('expanded')) {
             console.log('already open');
             return;
         }
         if (isMenuOpen && !parent.classList.contains('expanded')) {
-            console.log('close current and open new');
+            console.log('close current and open');
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             closeUpdateNav(openParent, openButton, openSubmenu);
-            return setTimeout(openUpdateNav(parent, button, submenu, children), 0);
+            return setTimeout(openUpdateNav(parent, button, submenu), 0);
         }
         console.log(`just entering`);
-        return openUpdateNav(parent, button, submenu, children);
+        return openUpdateNav(parent, button, submenu);
 
     });
 });
@@ -139,10 +163,7 @@ document.addEventListener('keydown', function(e) {
     console.log(e.code); // User presses enter on their main keyboard - Enter
     if (isMenuOpen) {
         const [openParent, openButton, openSubmenu, children] = findOpenMenuElements(globalNavList);
-        const firstChild = children[0];
-        const lastChild = children[children.length - 1];
         let currentIndex = 0;
-        let nextIndex = 0;
         if (e.code === 'ArrowUp') {
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
@@ -150,14 +171,9 @@ document.addEventListener('keydown', function(e) {
                 };
             });
             if (currentIndex === 0) {
-                firstChild.classList.remove('focus');
-                lastChild.focus();
-                return lastChild.classList.add('focus');
+                return moveToLastItem(children, currentIndex);
             }
-            nextIndex = currentIndex - 1;
-            children[currentIndex].classList.remove('focus');
-            children[nextIndex].classList.add('focus');
-            return children[nextIndex].focus();
+            return moveToPreviousItem(children, currentIndex);
         }
         if (e.code === 'ArrowDown') {
             children.forEach((child, index) => {
@@ -166,22 +182,16 @@ document.addEventListener('keydown', function(e) {
                 };
             });
             if (currentIndex === children.length - 1) {
-                children[currentIndex].classList.remove('focus');
-                firstChild.focus();
-                return firstChild.classList.add('focus');
+                return moveToFirstItem(children, currentIndex);
 
             }
-            nextIndex = currentIndex + 1;
-            children[currentIndex].classList.remove('focus');
-            children[nextIndex].classList.add('focus');
-            return children[nextIndex].focus();
+            return moveToNextItem(children, currentIndex);
         }
         if (e.code === 'Escape') {
             closeUpdateNav(openParent, openButton, openSubmenu);
             return openButton.focus();
         }
     }
-
 });
 
 // click anywhere outside of open menu to close
