@@ -101,14 +101,17 @@ function findNewMenuElements(event) {
 submenuToggles.forEach(toggle => {
     toggle.addEventListener('click', e => {
         const [parent, button, submenu, children] = findNewMenuElements(e);
+        // if the button's menu is open, simply close it
         if (isMenuOpen && parent.classList.contains('expanded')) {
             return closeUpdateNav(parent, button, submenu);
         }
+        // if another menu is open, close it first, then open the button's menu
         if (isMenuOpen && !parent.classList.contains('expanded')) {
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             closeUpdateNav(openParent, openButton, openSubmenu);
             return setTimeout(openUpdateNav(parent, button, submenu, children), 0);
         }
+        // no other menus are open, simply open the button's menu
         if (!isMenuOpen) {
             return openUpdateNav(parent, button, submenu, children);
         }
@@ -122,16 +125,19 @@ globalNavListItems.forEach(item => {
         const parent = e.target;
         const submenu = getSubmenu(parent);
         const button = parent.querySelector('button');
+        // edge case: menu is already open and user hovers into it: do nothing
         if (isMenuOpen && parent.classList.contains('expanded')) {
             console.log('already open');
             return;
         }
+        // another menu is open: close it and then open the newly hovered to menu
         if (isMenuOpen && !parent.classList.contains('expanded')) {
             console.log('close current and open');
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             closeUpdateNav(openParent, openButton, openSubmenu);
             return setTimeout(openUpdateNav(parent, button, submenu), 0);
         }
+        // no menus are open, simply open the menu the user has moused into
         console.log(`just entering`);
         return openUpdateNav(parent, button, submenu);
 
@@ -151,8 +157,8 @@ globalNavListItems.forEach(item => {
 
 globalNavTopLevelLinks.forEach(link => {
     link.addEventListener('focus', () => {
+        // user tabs/shift-tabs out of open menu, so simply close the menu
         if (isMenuOpen) {
-            console.log('when link gets focus, close the open menu, updated');
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             return closeUpdateNav(openParent, openButton, openSubmenu);
         }
@@ -170,9 +176,11 @@ document.addEventListener('keydown', function(e) {
                     currentIndex = index;
                 };
             });
+            // first item is focused and user hits Up arrow: so loop to the last item
             if (currentIndex === 0) {
                 return moveToLastItem(children, currentIndex);
             }
+            // user hits up arrow so simply move to the previous item
             return moveToPreviousItem(children, currentIndex);
         }
         if (e.code === 'ArrowDown') {
@@ -181,12 +189,15 @@ document.addEventListener('keydown', function(e) {
                     currentIndex = index;
                 };
             });
+            // last item is focused and user hits Down arrow: so loop to the first item
             if (currentIndex === children.length - 1) {
                 return moveToFirstItem(children, currentIndex);
 
             }
+            // user hits Down arrow so simply move to the next item
             return moveToNextItem(children, currentIndex);
         }
+        // hit Esc key to close any open menu
         if (e.code === 'Escape') {
             closeUpdateNav(openParent, openButton, openSubmenu);
             return openButton.focus();
