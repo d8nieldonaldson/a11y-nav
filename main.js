@@ -112,6 +112,7 @@ globalNavListItems.forEach(item => {
             closeUpdateNav(openParent, openButton, openSubmenu);
             return setTimeout(openUpdateNav(parent, button, submenu, children), 0);
         }
+        console.log(`just entering`);
         return openUpdateNav(parent, button, submenu, children);
 
     });
@@ -119,10 +120,12 @@ globalNavListItems.forEach(item => {
 
 globalNavListItems.forEach(item => {
     item.addEventListener('mouseleave', e => {
-        let parent = e.target;
-        let submenu = getSubmenu(parent);
-        let button = parent.querySelector('button');
-        if (isMenuOpen && parent.classList.contains('expanded')) {
+        // let parent = e.target;
+        // let submenu = getSubmenu(parent);
+        // let button = parent.querySelector('button');
+        const [parent, button, submenu] = findOpenMenuElements(globalNavList);
+        if (isMenuOpen) {
+            console.log(`just leaving updated`);
             return closeUpdateNav(parent, button, submenu);
         }
     });
@@ -130,9 +133,9 @@ globalNavListItems.forEach(item => {
 
 
 globalNavTopLevelLinks.forEach(link => {
-    link.addEventListener('focus', e => {
+    link.addEventListener('focus', () => {
         if (isMenuOpen) {
-            console.log('when link gets focus, close the open menu, updated, again');
+            console.log('when link gets focus, close the open menu, updated');
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             return closeUpdateNav(openParent, openButton, openSubmenu);
 
