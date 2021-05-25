@@ -69,17 +69,19 @@ function openUpdateNav(container, button, submenu, children) {
     container.classList.add('expanded');
     openUpdateButton(button);
     openSubmenu(submenu);
+    // if pass in children argument, move focus to the related button
+    // in case of mouseenter, we don't want to move focus, so don't pass in children
     if (children) {
         focusFirstChild(children);
     }
-    isMenuOpen = true;
+    return isMenuOpen = true;
 }
 
 function closeUpdateNav(container, button, submenu) {
     container.classList.remove('expanded');
     closeUpdateButton(button);
     closeSubmenu(submenu);
-    isMenuOpen = false;
+    return isMenuOpen = false;
 }
 
 function findOpenMenuElements(container) {
@@ -154,7 +156,6 @@ globalNavListItems.forEach(item => {
     });
 });
 
-
 globalNavTopLevelLinks.forEach(link => {
     link.addEventListener('focus', () => {
         // user tabs/shift-tabs out of open menu, so simply close the menu
@@ -192,7 +193,6 @@ document.addEventListener('keydown', function(e) {
             // last item is focused and user hits Down arrow: so loop to the first item
             if (currentIndex === children.length - 1) {
                 return moveToFirstItem(children, currentIndex);
-
             }
             // user hits Down arrow so simply move to the next item
             return moveToNextItem(children, currentIndex);
@@ -211,7 +211,6 @@ window.addEventListener('click', function(e) {
         if (isMenuOpen) {
             const [openParent, openButton, openSubmenu] = findOpenMenuElements(globalNavList);
             return closeUpdateNav(openParent, openButton, openSubmenu);
-
         }
     }
 });
