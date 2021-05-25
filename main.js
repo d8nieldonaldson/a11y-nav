@@ -117,10 +117,8 @@ submenuToggles.forEach(toggle => {
         if (!isMenuOpen) {
             return openUpdateNav(parent, button, submenu, children);
         }
-
     });
 });
-
 
 globalNavListItems.forEach(item => {
     item.addEventListener('mouseenter', e => {
@@ -194,6 +192,13 @@ document.addEventListener('keydown', function(e) {
             if (currentIndex === children.length - 1) {
                 return moveToFirstItem(children, currentIndex);
             }
+            // button has focus, menu is open
+            // so move focus to first element
+            if(document.activeElement === openButton){
+                console.log(`odd case`);
+                return moveToFirstItem(children, 0);
+
+            }
             // user hits Down arrow so simply move to the next item
             return moveToNextItem(children, currentIndex);
         }
@@ -201,6 +206,13 @@ document.addEventListener('keydown', function(e) {
         if (e.code === 'Escape') {
             closeUpdateNav(openParent, openButton, openSubmenu);
             return openButton.focus();
+        }
+        if(e.code === 'Tab'){
+            if(e.shiftKey){
+                console.log(`shift + tab`);
+                const focused = openSubmenu.querySelector('a.focus');
+                focused.classList.remove('focus');
+            }
         }
     }
 });
