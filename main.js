@@ -73,6 +73,10 @@ function openAndUpdateNav(container, button, submenu, children) {
 }
 
 function closeAndUpdateNav(container, button, submenu) {
+    const focused = submenu.querySelector('.focus');
+    if(focused){
+        focused.classList.remove('focus');
+    }
     container.classList.remove('expanded');
     container.setAttribute('data-expanded', 'false');
     closeUpdateButton(button);
