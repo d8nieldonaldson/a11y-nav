@@ -42,7 +42,7 @@ function getChildren(parent) {
 }
 
 function getOpenMenuParent(container) {
-    const parent = container.querySelector('.expanded');
+    const parent = container.querySelector("[data-expanded='true']");
     return parent;
 }
 
@@ -79,6 +79,7 @@ function getMenuElements(parent) {
 
 function openAndUpdateNav(container, button, submenu, children) {
     container.classList.add('expanded');
+    container.setAttribute('data-expanded', 'true');
     openUpdateButton(button);
     openSubmenu(submenu);
     // if pass in children argument, move focus to the related button
@@ -91,6 +92,7 @@ function openAndUpdateNav(container, button, submenu, children) {
 
 function closeAndUpdateNav(container, button, submenu) {
     container.classList.remove('expanded');
+    container.setAttribute('data-expanded', 'false');
     closeUpdateButton(button);
     closeSubmenu(submenu);
     return isMenuOpen = false;
