@@ -46,28 +46,10 @@ function getOpenMenuParent(container) {
     return parent;
 }
 
-function moveToFirstItem(items, currentIndex) {
+function arrowKeyToMoveFocus(items, currentIndex, nextIndex) {
     items[currentIndex].classList.remove('focus');
-    items[0].classList.add('focus');
-    return items[0].focus();
-}
-
-function moveToNextItem(items, currentIndex) {
-    items[currentIndex].classList.remove('focus');
-    items[currentIndex + 1].classList.add('focus');
-    return items[currentIndex + 1].focus();
-}
-
-function moveToPreviousItem(items, currentIndex) {
-    items[currentIndex].classList.remove('focus');
-    items[currentIndex - 1].classList.add('focus');
-    return items[currentIndex - 1].focus();
-}
-
-function moveToLastItem(items, currentIndex) {
-    items[currentIndex].classList.remove('focus');
-    items[items.length - 1].classList.add('focus');
-    return items[items.length - 1].focus();
+    items[nextIndex].classList.add('focus');
+    return items[nextIndex].focus();
 }
 
 function getMenuElements(parent) {
@@ -101,8 +83,7 @@ function closeAndUpdateNav(container, button, submenu) {
 
 globalNavList.addEventListener('click', e => {
     if (e.target.matches('.submenu-toggle')) {
-        const container = getParent(e);
-        const [parent, button, submenu, children] = getMenuElements(container);
+        const [parent, button, submenu, children] = getMenuElements(getParent(e));
         if (isMenuOpen && parent.classList.contains('expanded')) {
             return closeAndUpdateNav(parent, button, submenu);
         }
@@ -168,15 +149,15 @@ document.addEventListener('keydown', function(e) {
             if (e.code === 'ArrowUp') {
                 // first item is focused and user hits Up arrow: so loop to the last item
                 if (currentIndex === 0) {
-                    return moveToLastItem(children, currentIndex);
+                    return arrowKeyToMoveFocus(children, currentIndex, parseInt(children.length - 1));
                 }
                 // user hits up arrow so simply move to the previous item
-                return moveToPreviousItem(children, currentIndex);
+                return arrowKeyToMoveFocus(children, currentIndex, parseInt(currentIndex - 1));
             }
             // following is for ArrowDown
             // last item is focused and user hits Down arrow: so loop to the first item
             if (currentIndex === children.length - 1) {
-                return moveToFirstItem(children, currentIndex);
+                return arrowKeyToMoveFocus(children, currentIndex, 0);
             }
             // button (.submenu-toggle) has focus, menu is open and user hits Down arrow,
             // so move focus to first element in the element
@@ -184,7 +165,7 @@ document.addEventListener('keydown', function(e) {
                 return moveToFirstItem(children, 0);
             }
             // user hits Down arrow so simply move to the next item
-            return moveToNextItem(children, currentIndex);
+            return arrowKeyToMoveFocus(children, currentIndex, parseInt(currentIndex + 1));
         }
         // hit Esc key to close any open menu
         if (e.code === 'Escape') {
