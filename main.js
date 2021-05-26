@@ -41,6 +41,11 @@ function getChildren(parent) {
     return parent.querySelectorAll('a');
 }
 
+function getOpenMenuParent(container) {
+    const parent = container.querySelector('.expanded');
+    return parent;
+}
+
 function moveToFirstItem(items, currentIndex) {
     items[currentIndex].classList.remove('focus');
     items[0].classList.add('focus');
@@ -65,6 +70,13 @@ function moveToLastItem(items, currentIndex) {
     return items[items.length - 1].focus();
 }
 
+function getMenuElements(parent) {
+    const button = parent.querySelector('button');
+    const submenu = getSubmenu(parent);
+    const submenuChildren = getChildren(submenu);
+    return [parent, button, submenu, submenuChildren];
+}
+
 function openAndUpdateNav(container, button, submenu, children) {
     container.classList.add('expanded');
     openUpdateButton(button);
@@ -85,13 +97,6 @@ function closeAndUpdateNav(container, button, submenu) {
 }
 
 
-function getMenuElements(parent) {
-    const button = parent.querySelector('button');
-    const submenu = getSubmenu(parent);
-    const submenuChildren = getChildren(submenu);
-    return [parent, button, submenu, submenuChildren];
-}
-
 globalNavList.addEventListener('click', e => {
     if (e.target.matches('.submenu-toggle')) {
         const container = getParent(e);
@@ -101,8 +106,7 @@ globalNavList.addEventListener('click', e => {
         }
         // if another menu is open, close it first, then open the button's menu
         if (isMenuOpen && !parent.classList.contains('expanded')) {
-            const openContainer = globalNavList.querySelector('.expanded');
-            const [openParent, openButton, openSubmenu] = getMenuElements(openContainer);
+            const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
             closeAndUpdateNav(openParent, openButton, openSubmenu);
             return setTimeout(openAndUpdateNav(parent, button, submenu, children), 0);
         }
@@ -121,8 +125,7 @@ globalNavList.addEventListener('mouseenter', e => {
             if (e.target.classList.contains('expanded')) {
                 return
             }
-            const openContainer = globalNavList.querySelector('.expanded');
-            const [openParent, openButton, openSubmenu] = getMenuElements(openContainer);
+            const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
             closeAndUpdateNav(openParent, openButton, openSubmenu);
             return setTimeout(openAndUpdateNav(parent, button, submenu), 0);
         }
@@ -133,8 +136,7 @@ globalNavList.addEventListener('mouseenter', e => {
 globalNavList.addEventListener('mouseleave', e => {
     if (e.target.matches('.global-nav-list-item')) {
         if (isMenuOpen) {
-            const openContainer = globalNavList.querySelector('.expanded');
-            const [openParent, openButton, openSubmenu] = getMenuElements(openContainer);
+            const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
             closeAndUpdateNav(openParent, openButton, openSubmenu);
         }
     }
@@ -144,8 +146,7 @@ globalNavTopLevelLinks.forEach(link => {
     link.addEventListener('focus', () => {
         // user tabs/shift-tabs out of open menu, so simply close the menu
         if (isMenuOpen) {
-            const openContainer = globalNavList.querySelector('.expanded');
-            const [openParent, openButton, openSubmenu] = getMenuElements(openContainer);
+            const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
             return closeAndUpdateNav(openParent, openButton, openSubmenu);
         }
     });
@@ -154,8 +155,7 @@ globalNavTopLevelLinks.forEach(link => {
 document.addEventListener('keydown', function(e) {
     // console.log(e.code);
     if (isMenuOpen) {
-        const openContainer = globalNavList.querySelector('.expanded');
-        const [openParent, openButton, openSubmenu, children] = getMenuElements(openContainer);
+        const [openParent, openButton, openSubmenu, children] = getMenuElements(getOpenMenuParent(globalNavList));
         let currentIndex = 0;
         if (e.code === 'ArrowUp') {
             children.forEach((child, index) => {
@@ -206,8 +206,7 @@ document.addEventListener('keydown', function(e) {
 window.addEventListener('click', function(e) {
     if (!(globalNavList && globalNavList.contains(e.target))) {
         if (isMenuOpen) {
-            const openContainer = globalNavList.querySelector('.expanded');
-            const [openParent, openButton, openSubmenu] = getMenuElements(openContainer);
+            const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
             return closeAndUpdateNav(openParent, openButton, openSubmenu);
         }
     }
