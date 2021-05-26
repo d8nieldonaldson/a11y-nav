@@ -125,15 +125,14 @@ globalNavList.addEventListener('mouseleave', e => {
     }
 }, true);
 
-globalNavTopLevelLinks.forEach(link => {
-    link.addEventListener('focus', () => {
-        // user tabs/shift-tabs out of open menu, so simply close the menu
+globalNavList.addEventListener('focus', e => {
+    if (e.target.matches('.global-nav-top-level-link')) {
         if (isMenuOpen) {
             const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
             return closeAndUpdateNav(openParent, openButton, openSubmenu);
         }
-    });
-});
+    }
+}, true);
 
 document.addEventListener('keydown', function(e) {
     // console.log(e.code);
