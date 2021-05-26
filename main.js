@@ -196,7 +196,7 @@ document.addEventListener('keydown', function(e) {
         if (e.code === 'Tab') {
             if (e.shiftKey) {
                 const focused = openSubmenu.querySelector('a.focus');
-                focused.classList.remove('focus');
+                return focused.classList.remove('focus');
             }
         }
     }
