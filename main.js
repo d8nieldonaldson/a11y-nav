@@ -159,36 +159,33 @@ document.addEventListener('keydown', function(e) {
     if (isMenuOpen) {
         const [openParent, openButton, openSubmenu, children] = getMenuElements(getOpenMenuParent(globalNavList));
         let currentIndex = 0;
-        if (e.code === 'ArrowUp') {
+        if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
                 }
             });
-            // first item is focused and user hits Up arrow: so loop to the last item
-            if (currentIndex === 0) {
-                return moveToLastItem(children, currentIndex);
-            }
-            // user hits up arrow so simply move to the previous item
-            return moveToPreviousItem(children, currentIndex);
-        }
-        if (e.code === 'ArrowDown') {
-            children.forEach((child, index) => {
-                if (child.classList.contains('focus')) {
-                    currentIndex = index;
+            if (e.code === 'ArrowUp') {
+                // first item is focused and user hits Up arrow: so loop to the last item
+                if (currentIndex === 0) {
+                    return moveToLastItem(children, currentIndex);
                 }
-            });
-            // last item is focused and user hits Down arrow: so loop to the first item
-            if (currentIndex === children.length - 1) {
-                return moveToFirstItem(children, currentIndex);
+                // user hits up arrow so simply move to the previous item
+                return moveToPreviousItem(children, currentIndex);
             }
-            // button has focus, menu is open
-            // so move focus to first element
-            if (document.activeElement === openButton) {
-                return moveToFirstItem(children, 0);
+            if (e.code === 'ArrowDown') {
+                // last item is focused and user hits Down arrow: so loop to the first item
+                if (currentIndex === children.length - 1) {
+                    return moveToFirstItem(children, currentIndex);
+                }
+                // button has focus, menu is open
+                // so move focus to first element
+                if (document.activeElement === openButton) {
+                    return moveToFirstItem(children, 0);
+                }
+                // user hits Down arrow so simply move to the next item
+                return moveToNextItem(children, currentIndex);
             }
-            // user hits Down arrow so simply move to the next item
-            return moveToNextItem(children, currentIndex);
         }
         // hit Esc key to close any open menu
         if (e.code === 'Escape') {
