@@ -173,19 +173,18 @@ document.addEventListener('keydown', function(e) {
                 // user hits up arrow so simply move to the previous item
                 return moveToPreviousItem(children, currentIndex);
             }
-            if (e.code === 'ArrowDown') {
-                // last item is focused and user hits Down arrow: so loop to the first item
-                if (currentIndex === children.length - 1) {
-                    return moveToFirstItem(children, currentIndex);
-                }
-                // button has focus, menu is open
-                // so move focus to first element
-                if (document.activeElement === openButton) {
-                    return moveToFirstItem(children, 0);
-                }
-                // user hits Down arrow so simply move to the next item
-                return moveToNextItem(children, currentIndex);
+            // following is for ArrowDown
+            // last item is focused and user hits Down arrow: so loop to the first item
+            if (currentIndex === children.length - 1) {
+                return moveToFirstItem(children, currentIndex);
             }
+            // button (.submenu-toggle) has focus, menu is open and user hits Down arrow,
+            // so move focus to first element in the element
+            if (document.activeElement === openButton) {
+                return moveToFirstItem(children, 0);
+            }
+            // user hits Down arrow so simply move to the next item
+            return moveToNextItem(children, currentIndex);
         }
         // hit Esc key to close any open menu
         if (e.code === 'Escape') {
