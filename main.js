@@ -114,20 +114,16 @@ globalNavList.addEventListener('click', e => {
 })
 
 globalNavList.addEventListener('mouseenter', e => {
-    console.log(`working 1a`);
     if (e.target.matches('.global-nav-list-item')) {
-        console.log(`working 2a`);
         const container = e.target;
         const [parent, button, submenu] = getMenuElements(container);
         if (isMenuOpen) {
             if (e.target.classList.contains('expanded')) {
-                console.log(`edge case`);
                 return
             }
             const openContainer = globalNavList.querySelector('.expanded');
             const [openParent, openButton, openSubmenu] = getMenuElements(openContainer);
             closeAndUpdateNav(openParent, openButton, openSubmenu);
-            console.log(`menu open`);
             return setTimeout(openAndUpdateNav(parent, button, submenu), 0);
         }
         return openAndUpdateNav(parent, button, submenu);
@@ -156,10 +152,10 @@ globalNavTopLevelLinks.forEach(link => {
 });
 
 document.addEventListener('keydown', function(e) {
-    console.log(e.code); // User presses enter on their main keyboard - Enter
+    // console.log(e.code);
     if (isMenuOpen) {
         const openContainer = globalNavList.querySelector('.expanded');
-        const [openParent, openButton, openSubmenu] = getMenuElements(openContainer);
+        const [openParent, openButton, openSubmenu, children] = getMenuElements(openContainer);
         let currentIndex = 0;
         if (e.code === 'ArrowUp') {
             children.forEach((child, index) => {
@@ -187,9 +183,7 @@ document.addEventListener('keydown', function(e) {
             // button has focus, menu is open
             // so move focus to first element
             if (document.activeElement === openButton) {
-                console.log(`odd case`);
                 return moveToFirstItem(children, 0);
-
             }
             // user hits Down arrow so simply move to the next item
             return moveToNextItem(children, currentIndex);
@@ -201,7 +195,6 @@ document.addEventListener('keydown', function(e) {
         }
         if (e.code === 'Tab') {
             if (e.shiftKey) {
-                console.log(`shift + tab`);
                 const focused = openSubmenu.querySelector('a.focus');
                 focused.classList.remove('focus');
             }
