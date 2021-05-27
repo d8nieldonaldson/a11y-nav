@@ -5,7 +5,7 @@ const globalNavList = document.querySelector('.global-nav-list');
 const globalNavListItems = globalNavList.querySelectorAll('.global-nav-list-item');
 const globalNavTopLevelLinks = globalNavList.querySelectorAll('.global-nav-top-level-link');
 let isMenuOpen = false;
-let isAnItemActive = false;
+let activeItemExists = false;
 
 function getParentFromEvent(event) {
     return event.target.parentNode;
@@ -36,7 +36,7 @@ function openSubmenu(submenu) {
 function focusFirstChild(children) {
     children[0].focus();
     children[0].classList.add('focus');
-    return isAnItemActive = true;
+    return activeItemExists = true;
 }
 
 function getChildren(parent) {
@@ -52,7 +52,7 @@ function arrowKeyToMoveFocus(items, currentIndex, nextIndex) {
     items[currentIndex].classList.remove('focus');
     items[nextIndex].classList.add('focus');
     items[nextIndex].focus();
-    return isAnItemActive = true;
+    return activeItemExists = true;
 }
 
 function getMenuElements(parent) {
@@ -71,9 +71,9 @@ function openAndUpdateNav(container, button, submenu, children) {
     // in case of mouseenter, we don't want to move focus, so don't pass in children
     if (children) {
         focusFirstChild(children);
-        isAnItemActive = true;
+        activeItemExists = true;
     }
-    return [isAnItemActive, isMenuOpen = true];
+    return [activeItemExists, isMenuOpen = true];
 }
 
 function closeAndUpdateNav(container, button, submenu) {
@@ -86,7 +86,7 @@ function closeAndUpdateNav(container, button, submenu) {
     closeUpdateButton(button);
     closeSubmenu(submenu);
     
-    return [isMenuOpen = false, isAnItemActive = false];
+    return [isMenuOpen = false, activeItemExists = false];
 
 }
 
@@ -187,7 +187,7 @@ document.addEventListener('keydown', e => {
             if (e.shiftKey) {
                 const focused = openSubmenu.querySelector('a.focus');
                 focused.classList.remove('focus');
-                return isAnItemActive = false;
+                return activeItemExists = false;
             }
         }
     }
