@@ -85,11 +85,8 @@ function closeAndUpdateNav(container, button, submenu) {
     container.setAttribute('data-expanded', 'false');
     closeUpdateButton(button);
     closeSubmenu(submenu);
-    
     return [isMenuOpen = false, activeItemExists = false];
-
 }
-
 
 globalNavList.addEventListener('click', e => {
     if (e.target.matches('.submenu-toggle')) {
