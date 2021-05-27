@@ -5,8 +5,9 @@ const globalNavList = document.querySelector('.global-nav-list');
 const globalNavListItems = globalNavList.querySelectorAll('.global-nav-list-item');
 const globalNavTopLevelLinks = globalNavList.querySelectorAll('.global-nav-top-level-link');
 let isMenuOpen = false;
+let isAnItemActive = false;
 
-function getParent(event) {
+function getParentFromEvent(event) {
     return event.target.parentNode;
 }
 
@@ -34,7 +35,8 @@ function openSubmenu(submenu) {
 
 function focusFirstChild(children) {
     children[0].focus();
-    return children[0].classList.add('focus');
+    children[0].classList.add('focus');
+    return isAnItemActive = true;
 }
 
 function getChildren(parent) {
@@ -49,7 +51,8 @@ function getOpenMenuParent(container) {
 function arrowKeyToMoveFocus(items, currentIndex, nextIndex) {
     items[currentIndex].classList.remove('focus');
     items[nextIndex].classList.add('focus');
-    return items[nextIndex].focus();
+    items[nextIndex].focus();
+    return isAnItemActive = true;
 }
 
 function getMenuElements(parent) {
@@ -68,8 +71,9 @@ function openAndUpdateNav(container, button, submenu, children) {
     // in case of mouseenter, we don't want to move focus, so don't pass in children
     if (children) {
         focusFirstChild(children);
+        isAnItemActive = true;
     }
-    return isMenuOpen = true;
+    return [isAnItemActive, isMenuOpen = true];
 }
 
 function closeAndUpdateNav(container, button, submenu) {
@@ -81,13 +85,15 @@ function closeAndUpdateNav(container, button, submenu) {
     container.setAttribute('data-expanded', 'false');
     closeUpdateButton(button);
     closeSubmenu(submenu);
-    return isMenuOpen = false;
+    
+    return [isMenuOpen = false, isAnItemActive = false];
+
 }
 
 
 globalNavList.addEventListener('click', e => {
     if (e.target.matches('.submenu-toggle')) {
-        const [parent, button, submenu, children] = getMenuElements(getParent(e));
+        const [parent, button, submenu, children] = getMenuElements(getParentFromEvent(e));
         if (isMenuOpen && parent.classList.contains('expanded')) {
             return closeAndUpdateNav(parent, button, submenu);
         }
@@ -102,7 +108,7 @@ globalNavList.addEventListener('click', e => {
             return openAndUpdateNav(parent, button, submenu, children);
         }
     }
-})
+}, true);
 
 globalNavList.addEventListener('mouseenter', e => {
     if (e.target.matches('.global-nav-list-item')) {
@@ -110,7 +116,7 @@ globalNavList.addEventListener('mouseenter', e => {
         const [parent, button, submenu] = getMenuElements(container);
         if (isMenuOpen) {
             if (e.target.classList.contains('expanded')) {
-                return
+                return;
             }
             const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
             closeAndUpdateNav(openParent, openButton, openSubmenu);
@@ -124,7 +130,7 @@ globalNavList.addEventListener('mouseleave', e => {
     if (e.target.matches('.global-nav-list-item')) {
         if (isMenuOpen) {
             const [openParent, openButton, openSubmenu] = getMenuElements(getOpenMenuParent(globalNavList));
-            closeAndUpdateNav(openParent, openButton, openSubmenu);
+            return closeAndUpdateNav(openParent, openButton, openSubmenu);
         }
     }
 }, true);
@@ -138,7 +144,7 @@ globalNavList.addEventListener('focus', e => {
     }
 }, true);
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', e => {
     // console.log(e.code);
     if (isMenuOpen) {
         const [openParent, openButton, openSubmenu, children] = getMenuElements(getOpenMenuParent(globalNavList));
@@ -147,6 +153,7 @@ document.addEventListener('keydown', function(e) {
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
+                    return currentIndex;    
                 }
             });
             if (e.code === 'ArrowUp') {
@@ -176,9 +183,11 @@ document.addEventListener('keydown', function(e) {
             return openButton.focus();
         }
         if (e.code === 'Tab') {
+            // Shift + Tab moves focus to button, so remove the focus class from the submenu item
             if (e.shiftKey) {
                 const focused = openSubmenu.querySelector('a.focus');
-                return focused.classList.remove('focus');
+                focused.classList.remove('focus');
+                return isAnItemActive = false;
             }
         }
     }
