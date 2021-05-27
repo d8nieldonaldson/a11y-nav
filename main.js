@@ -39,8 +39,8 @@ function focusFirstChild(children) {
     return activeItemExists = true;
 }
 
-function getChildren(parent) {
-    return parent.querySelectorAll('a');
+function getChildren(parent, selector) {
+    return parent.querySelectorAll(selector);
 }
 
 function getOpenMenuParent(container) {
@@ -58,7 +58,7 @@ function arrowKeyToMoveFocus(items, currentIndex, nextIndex) {
 function getMenuElements(parent) {
     const button = parent.querySelector('button');
     const submenu = getSubmenu(parent);
-    const submenuChildren = getChildren(submenu);
+    const submenuChildren = getChildren(submenu, 'a');
     return [parent, button, submenu, submenuChildren];
 }
 
@@ -150,6 +150,7 @@ document.addEventListener('keydown', e => {
         const [openParent, openButton, openSubmenu, children] = getMenuElements(getOpenMenuParent(globalNavList));
         let currentIndex = 0;
         if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+            e.preventDefault();
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
