@@ -152,10 +152,10 @@ document.addEventListener('keydown', function(e) {
             if (e.code === 'ArrowUp') {
                 // first item is focused and user hits Up arrow: so loop to the last item
                 if (currentIndex === 0) {
-                    return arrowKeyToMoveFocus(children, currentIndex, parseInt(children.length - 1));
+                    return arrowKeyToMoveFocus(children, currentIndex, Number(children.length - 1));
                 }
                 // user hits up arrow so simply move to the previous item
-                return arrowKeyToMoveFocus(children, currentIndex, parseInt(currentIndex - 1));
+                return arrowKeyToMoveFocus(children, currentIndex, Number(currentIndex - 1));
             }
             // following is for ArrowDown
             // last item is focused and user hits Down arrow: so loop to the first item
@@ -168,7 +168,7 @@ document.addEventListener('keydown', function(e) {
                 return moveToFirstItem(children, 0);
             }
             // user hits Down arrow so simply move to the next item
-            return arrowKeyToMoveFocus(children, currentIndex, parseInt(currentIndex + 1));
+            return arrowKeyToMoveFocus(children, currentIndex, Number(currentIndex + 1));
         }
         // hit Esc key to close any open menu
         if (e.code === 'Escape') {
