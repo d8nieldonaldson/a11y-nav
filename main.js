@@ -149,7 +149,7 @@ document.addEventListener('keydown', e => {
 window.addEventListener('click', function(e) {
     if (!(globalNavList && globalNavList.contains(e.target))) {
         if (isMenuOpen) {
-            const openParent = globalNavList.querySelector('expanded');
+            const openParent = globalNavList.querySelector('.expanded');
             return toggleMenuAndUpdateNav(openParent, false);        
         }
     }
