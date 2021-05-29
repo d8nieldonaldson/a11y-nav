@@ -15,24 +15,14 @@ function getSubmenu(parent) {
     return parent.querySelector('.submenu-list');
 }
 
-function closeUpdateButton(button) {
-    button.setAttribute('aria-expanded', 'false');
+function toggleMenu(menu){
+    menu.classList.toggle('show');
+    menu.toggleAttribute('hidden');
 }
 
-function openUpdateButton(button) {
-    button.setAttribute('aria-expanded', 'true');
+function toggleButton(button){
+    button.toggleAttribute('aria-expanded');
 }
-
-function closeSubmenu(submenu) {
-    submenu.classList.remove('show');
-    submenu.hidden = !submenu.hidden;
-}
-
-function openSubmenu(submenu) {
-    submenu.classList.add('show');
-    submenu.hidden = !submenu.hidden;
-}
-
 function focusFirstChild(children) {
     children[0].focus();
     children[0].classList.add('focus');
@@ -65,8 +55,8 @@ function getMenuElements(parent) {
 function openAndUpdateNav(container, button, submenu, children) {
     container.classList.add('expanded');
     container.setAttribute('data-expanded', 'true');
-    openUpdateButton(button);
-    openSubmenu(submenu);
+    toggleButton(button);
+    toggleMenu(submenu);
     // if pass in children argument, move focus to the related button
     // in case of mouseenter, we don't want to move focus, so don't pass in children
     if (children) {
@@ -83,8 +73,8 @@ function closeAndUpdateNav(container, button, submenu) {
     }
     container.classList.remove('expanded');
     container.setAttribute('data-expanded', 'false');
-    closeUpdateButton(button);
-    closeSubmenu(submenu);
+    toggleButton(button);
+    toggleMenu(submenu);
     return [isMenuOpen = false, activeItemExists = false];
 }
 
