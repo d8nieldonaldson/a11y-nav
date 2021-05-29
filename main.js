@@ -7,7 +7,6 @@ const globalNavTopLevelLinks = globalNavList.querySelectorAll('.global-nav-top-l
 let isMenuOpen = false;
 let activeItemExists = false;
 
-
 function toggleMenu(menu){
     menu.classList.toggle('show');
     menu.toggleAttribute('hidden');
@@ -37,6 +36,7 @@ function toggleMenuAndUpdateNav(container, setFocus){
         moveFocus(children, 0, 0);
         activeItemExists = true;
     }
+    return [activeItemExists, isMenuOpen]
 }
 
 globalNavList.addEventListener('click', e => {
