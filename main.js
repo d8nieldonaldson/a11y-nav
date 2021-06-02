@@ -7,14 +7,20 @@ const globalNavTopLevelLinks = globalNavList.querySelectorAll('.global-nav-top-l
 let isMenuOpen = false;
 let activeItemExists = false;
 
-function toggleMenu(menu){
+function toggleMenu(menu) {
     menu.classList.toggle('show');
     menu.toggleAttribute('hidden');
     isMenuOpen = !isMenuOpen;
 }
 
-function toggleButton(button){
-    button.toggleAttribute('aria-expanded');
+function toggleButton(button) {
+    // button.toggleAttribute('aria-expanded');
+    button.setAttribute(
+        'aria-expanded',
+        button.getAttribute('aria-expanded') === 'false' ?
+        'true' :
+        'false'
+    )
 }
 
 function moveFocus(items, currentIndex, nextIndex) {
@@ -24,15 +30,15 @@ function moveFocus(items, currentIndex, nextIndex) {
     return activeItemExists = true;
 }
 
-function toggleMenuAndUpdateNav(container, setFocus){
-    const button = container.querySelector('button'); 
+function toggleMenuAndUpdateNav(container, setFocus) {
+    const button = container.querySelector('button');
     const submenu = container.querySelector('.submenu-list');
     const children = submenu.querySelectorAll('a');
     container.classList.toggle('expanded');
     container.toggleAttribute('data-expanded');
     toggleButton(button);
     toggleMenu(submenu);
-    if(setFocus){
+    if (setFocus) {
         moveFocus(children, 0, 0);
         activeItemExists = true;
     }
@@ -60,8 +66,7 @@ globalNavList.addEventListener('click', e => {
 
 globalNavList.addEventListener('mouseenter', e => {
     if (e.target.matches('.global-nav-list-item')) {
-        const parent = e.target;
-        ;
+        const parent = e.target;;
         if (isMenuOpen) {
             if (e.target.classList.contains('expanded')) {
                 return;
@@ -105,7 +110,7 @@ document.addEventListener('keydown', e => {
             children.forEach((child, index) => {
                 if (child.classList.contains('focus')) {
                     currentIndex = index;
-                    return currentIndex;    
+                    return currentIndex;
                 }
             });
             if (e.code === 'ArrowUp') {
@@ -150,7 +155,7 @@ window.addEventListener('click', function(e) {
     if (!(globalNavList && globalNavList.contains(e.target))) {
         if (isMenuOpen) {
             const openParent = globalNavList.querySelector('.expanded');
-            return toggleMenuAndUpdateNav(openParent, false);        
+            return toggleMenuAndUpdateNav(openParent, false);
         }
     }
 });
